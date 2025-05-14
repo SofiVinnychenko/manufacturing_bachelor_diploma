@@ -1,3 +1,4 @@
+The project was developed in the period: February - June 2024
 This project is a bachelor's thesis on the topic "Development of an MES-system component for optimization of enterprise production processes."
 Its purpose was to create a functional component of an MES-system that allows optimizing the control and management of production processes at an enterprise.
 
