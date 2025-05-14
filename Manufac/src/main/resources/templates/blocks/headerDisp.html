@@ -1,0 +1,25 @@
+<meta charset="UTF-8">
+<div th:fragment="header">
+    <div class="container-wrapper">
+        <div class="container">
+            <header class="d-flex flex-wrap align-items-center justify-content-between py-3 mb-5 border-bottom my-header">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                    <img src="/img/logo.png" alt="logo" width="270" height="60">
+                </a>
+
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="/disp-processes" class="nav-link">Processes</a></li>
+                <li class="nav-item"><a href="/monitoring" class="nav-link">Monitoring</a></li>
+                <li class="nav-item"><a href="/repair-info-disp" class="nav-link">Repair</a></li>
+                <li class="nav-item"><a href="/daily-report" class="nav-link">Work Reports</a></li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <input class="nav-link active" aria-current="page" type="submit" value="Logout"/>
+                    </form>
+                </li>
+            </ul>
+        </header>
+    </div>
+</div>
+</div>

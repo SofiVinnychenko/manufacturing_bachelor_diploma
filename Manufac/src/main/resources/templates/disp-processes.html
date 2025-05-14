@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Processes</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/headercol.css">
+    <style>
+        .table td, .table th {
+            background-color: #e6eaec;
+        }
+    </style>
+</head>
+<body>
+<header th:insert="blocks/headerDisp :: header"></header>
+<div class="container mt-5">
+    <div class="tab-content" id="myTabContent">
+            <h2>Processes</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="15%">Number</th>
+            <th width="15%">Datetime</th>
+            <th width="15%">Process</th>
+            <th width="15%">Personal Tasks</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="process : ${wprog}">
+            <td th:text="${process.number}"></td>
+            <td th:text="${#dates.format(process.datetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${process.process}"></td>
+            <td><a th:href="@{'/disp-processes/' + ${process.id} + '/pt'}" class="btn btn-outline-primary">PT</a></td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+</body>
+</html>

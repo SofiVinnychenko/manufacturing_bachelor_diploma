@@ -1,0 +1,518 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Replacing machines</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/CSS/headercol.css">
+    <style>
+        .table th {
+            background-color: #e6eaec;
+        }
+        .toast {
+            background-color: black;
+            color: white;
+        }
+        .toast-header {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<header th:insert="blocks/headerRepairer :: header"></header>
+<div class="container mt-5">
+    <div class="tab-content" id="myTabContent">
+        <div class="row">
+            <div class="col-md-12 mb-5">
+                <h3>Mixers for pasta</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${mixerpastaList}">
+                        <td th:text="${item[5]}"></td>
+                        <td>
+                            <select th:id="'status-' + ${item[0]}" class="form-select">
+                                <option value="USED" th:selected="${item[4].name() == 'USED'}">USED</option>
+                                <option value="STORAGE" th:selected="${item[4].name() == 'STORAGE'}">STORAGE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" th:data-id="${item[0]}" class="btn btn-warning text-black save-status">Save changes</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 mb-5">
+                <h3>Mixers for electrolyte</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="13%">ModelE</th>
+                        <th width="15%">StatusE</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${mixerelectrolyteList}">
+                        <td th:text="${item[5]}"></td>
+                        <td>
+                            <select th:id="'statusE-' + ${item[0]}" class="form-select">
+                                <option value="USED" th:selected="${item[4].name() == 'USED'}">USED</option>
+                                <option value="STORAGE" th:selected="${item[4].name() == 'STORAGE'}">STORAGE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" th:data-id="${item[0]}" class="btn btn-warning text-black save-statusE">Save changes</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 mb-5">
+                <h3>Syringe machines</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="13%">Model</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="syritem : ${syringemachinesList}">
+                        <td th:text="${syritem[6]}"></td>
+                        <td>
+                            <select th:id="'statusS-' + ${syritem[0]}" class="form-select">
+                                <option value="USED" th:selected="${syritem[5].name() == 'USED'}">USED</option>
+                                <option value="STORAGE" th:selected="${syritem[5].name() == 'STORAGE'}">STORAGE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" th:data-id="${syritem[0]}" class="btn btn-warning text-black save-statusS">Save changes</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 mb-5">
+                <h3>Dry oven</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="13%">Model</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="dryitem : ${dryovenList}">
+                        <td th:text="${dryitem[6]}"></td>
+                        <td>
+                            <select th:id="'statusD-' + ${dryitem[0]}" class="form-select">
+                                <option value="USED" th:selected="${dryitem[5].name() == 'USED'}">USED</option>
+                                <option value="STORAGE" th:selected="${dryitem[5].name() == 'STORAGE'}">STORAGE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" th:data-id="${dryitem[0]}" class="btn btn-warning text-black save-statusD">Save changes</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 mb-5">
+                <h3>Hydraulic press</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="13%">Model</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="hyditem : ${hydrpressList}">
+                        <td th:text="${hyditem[6]}"></td>
+                        <td>
+                            <select th:id="'statusH-' + ${hyditem[0]}" class="form-select">
+                                <option value="USED" th:selected="${hyditem[5].name() == 'USED'}">USED</option>
+                                <option value="STORAGE" th:selected="${hyditem[5].name() == 'STORAGE'}">STORAGE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" th:data-id="${hyditem[0]}" class="btn btn-warning text-black save-statusH">Save changes</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 mb-5">
+                <h3>Laser cutter</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="13%">Model</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="lasitem : ${lasercutterList}">
+                        <td th:text="${lasitem[7]}"></td>
+                        <td>
+                            <select th:id="'statusL-' + ${lasitem[0]}" class="form-select">
+                                <option value="USED" th:selected="${lasitem[6].name() == 'USED'}">USED</option>
+                                <option value="STORAGE" th:selected="${lasitem[6].name() == 'STORAGE'}">STORAGE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" th:data-id="${lasitem[0]}" class="btn btn-warning text-black save-statusL">Save changes</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 mb-5">
+                <h3>Stacking machines</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="13%">Model</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="stitem : ${stackmashList}">
+                        <td th:text="${stitem[7]}"></td>
+                        <td>
+                            <select th:id="'statusST-' + ${stitem[0]}" class="form-select">
+                                <option value="USED" th:selected="${stitem[6].name() == 'USED'}">USED</option>
+                                <option value="STORAGE" th:selected="${stitem[6].name() == 'STORAGE'}">STORAGE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" th:data-id="${stitem[0]}" class="btn btn-warning text-black save-statusST">Save changes</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 mb-5">
+                <h3>Electrolyte filling machines</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="13%">Model</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="cellitem : ${cellelectrolytemList}">
+                        <td th:text="${cellitem[5]}"></td>
+                        <td>
+                            <select th:id="'statusC-' + ${cellitem[0]}" class="form-select">
+                                <option value="USED" th:selected="${cellitem[4].name() == 'USED'}">USED</option>
+                                <option value="STORAGE" th:selected="${cellitem[4].name() == 'STORAGE'}">STORAGE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" th:data-id="${cellitem[0]}" class="btn btn-warning text-black save-statusC">Save changes</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 mb-5">
+                <h3>Battery chamber sealing machines</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="13%">Model</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="sealitem : ${sealingchamberList}">
+                        <td th:text="${sealitem[8]}"></td>
+                        <td>
+                            <select th:id="'statusSC-' + ${sealitem[0]}" class="form-select">
+                                <option value="USED" th:selected="${sealitem[7].name() == 'USED'}">USED</option>
+                                <option value="STORAGE" th:selected="${sealitem[7].name() == 'STORAGE'}">STORAGE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" th:data-id="${sealitem[0]}" class="btn btn-warning text-black save-statusSC">Save changes</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="statusToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Status Update</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Status updated successfully!
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+        $('.save-status').click(function() {
+            var id = $(this).data('id');
+            var status = $('#status-' + id + ' option:selected').val();
+
+            $.ajax({
+                url: '/update-status',
+                type: 'POST',
+                data: {
+                    id: id,
+                    status: status,
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function(response) {
+                    var toast = new bootstrap.Toast($('#statusToast'));
+                    toast.show();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+
+    var csrfTokenE = $("meta[name='_csrf']").attr("content");
+    var csrfHeaderE = $("meta[name='_csrf_header']").attr("content");
+    $('.save-statusE').click(function() {
+        var id = $(this).data('id');
+        var statusE = $('#statusE-' + id + ' option:selected').val();
+
+        $.ajax({
+            url: '/update-statusE',
+            type: 'POST',
+            data: {
+                id: id,
+                statusE: statusE
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeaderE, csrfTokenE);
+            },
+            success: function(response) {
+                var toast = new bootstrap.Toast($('#statusToast'));
+                toast.show();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    var csrfTokenS = $("meta[name='_csrf']").attr("content");
+    var csrfHeaderS = $("meta[name='_csrf_header']").attr("content");
+    $('.save-statusS').click(function() {
+        var id = $(this).data('id');
+        var statusS = $('#statusS-' + id + ' option:selected').val();
+
+        $.ajax({
+            url: '/update-statusS',
+            type: 'POST',
+            data: {
+                id: id,
+                statusS: statusS,
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeaderS, csrfTokenS);
+            },
+            success: function(response) {
+                var toast = new bootstrap.Toast($('#statusToast'));
+                toast.show();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    var csrfTokenD = $("meta[name='_csrf']").attr("content");
+    var csrfHeaderD = $("meta[name='_csrf_header']").attr("content");
+    $('.save-statusD').click(function() {
+        var id = $(this).data('id');
+        var statusD = $('#statusD-' + id + ' option:selected').val();
+
+        $.ajax({
+            url: '/update-statusD',
+            type: 'POST',
+            data: {
+                id: id,
+                statusD: statusD,
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeaderD, csrfTokenD);
+            },
+            success: function(response) {
+                var toast = new bootstrap.Toast($('#statusToast'));
+                toast.show();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    var csrfTokenH = $("meta[name='_csrf']").attr("content");
+    var csrfHeaderH = $("meta[name='_csrf_header']").attr("content");
+    $('.save-statusH').click(function() {
+        var id = $(this).data('id');
+        var statusH = $('#statusH-' + id + ' option:selected').val();
+
+        $.ajax({
+            url: '/update-statusH',
+            type: 'POST',
+            data: {
+                id: id,
+                statusH: statusH,
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeaderH, csrfTokenH);
+            },
+            success: function(response) {
+                var toast = new bootstrap.Toast($('#statusToast'));
+                toast.show();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    var csrfTokenL = $("meta[name='_csrf']").attr("content");
+    var csrfHeaderL = $("meta[name='_csrf_header']").attr("content");
+    $('.save-statusL').click(function() {
+        var id = $(this).data('id');
+        var statusL = $('#statusL-' + id + ' option:selected').val();
+
+        $.ajax({
+            url: '/update-statusL',
+            type: 'POST',
+            data: {
+                id: id,
+                statusL: statusL,
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeaderL, csrfTokenL);
+            },
+            success: function(response) {
+                var toast = new bootstrap.Toast($('#statusToast'));
+                toast.show();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    var csrfTokenST = $("meta[name='_csrf']").attr("content");
+    var csrfHeaderST = $("meta[name='_csrf_header']").attr("content");
+    $('.save-statusST').click(function() {
+        var id = $(this).data('id');
+        var statusST = $('#statusST-' + id + ' option:selected').val();
+
+        $.ajax({
+            url: '/update-statusST',
+            type: 'POST',
+            data: {
+                id: id,
+                statusST: statusST,
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeaderST, csrfTokenST);
+            },
+            success: function(response) {
+                var toast = new bootstrap.Toast($('#statusToast'));
+                toast.show();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    var csrfTokenC = $("meta[name='_csrf']").attr("content");
+    var csrfHeaderC = $("meta[name='_csrf_header']").attr("content");
+    $('.save-statusC').click(function() {
+        var id = $(this).data('id');
+        var statusC = $('#statusC-' + id + ' option:selected').val();
+
+        $.ajax({
+            url: '/update-statusC',
+            type: 'POST',
+            data: {
+                id: id,
+                statusC: statusC,
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeaderC, csrfTokenC);
+            },
+            success: function(response) {
+                var toast = new bootstrap.Toast($('#statusToast'));
+                toast.show();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    var csrfTokenSC = $("meta[name='_csrf']").attr("content");
+    var csrfHeaderSC = $("meta[name='_csrf_header']").attr("content");
+    $('.save-statusSC').click(function() {
+        var id = $(this).data('id');
+        var statusSC = $('#statusSC-' + id + ' option:selected').val();
+
+        $.ajax({
+            url: '/update-statusSC',
+            type: 'POST',
+            data: {
+                id: id,
+                statusSC: statusSC,
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeaderSC, csrfTokenSC);
+            },
+            success: function(response) {
+                var toast = new bootstrap.Toast($('#statusToast'));
+                toast.show();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+</script>
+</body>
+</html>

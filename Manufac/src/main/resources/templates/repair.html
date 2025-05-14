@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Repair report</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/CSS/headercol.css">
+</head>
+<body>
+<header th:insert="blocks/headerDisp :: header"></header>
+<div class="container mt-5">
+    <h2>Repair report</h2>
+    <form action="/repair" method="post">
+        <div class="row mb-5 mt-5">
+            <div class="col">
+                <input type="text" name="problem" placeholder="Enter main problem" class="form-control">
+            </div>
+            <div class="col">
+                <select name="process" class="form-select">
+                    <option value="" selected disabled>Select process</option>
+                    <option value="mixing_paste">Making paste</option>
+                    <option value="creating_electrolyte">Making electrolyte</option>
+                    <option value="applying_paste_to_collectors">Applying paste to collectors</option>
+                    <option value="drying_the_electrodes">Drying the electrodes</option>
+                    <option value="electrode_pressing">Electrode pressing</option>
+                    <option value="electrode_cutting">Cutting electrodes</option>
+                    <option value="stacking_process">Stacking process</option>
+                    <option value="filling_electrolyte">Filling the battery with electrolyte</option>
+                    <option value="sealing_of_battery_cells">Sealing of battery cells</option>
+                </select>
+            </div>
+            <div class="col">
+            <select class="form-select" id="machineModel" name="machines_model">
+                <option value="" selected>Select a model</option>
+                <option th:each="machine : ${machines}" th:value="${machine.id}" th:text="${machine.model}"></option>
+            </select>
+            </div>
+        </div>
+        <div class="row mb-5 mt-3">
+            <div class="col">
+                <input type="text" name="normal_value_min" placeholder="Enter the lower limit of the range of acceptable values" class="form-control">
+            </div>
+            <div class="col">
+                <input type="text" name="normal_value_max" placeholder="Enter the upper limit of the range of acceptable values" class="form-control">
+            </div>
+            <div class="col">
+                <input type="text" name="abnormal_value" placeholder="Enter abnormal value" class="form-control">
+            </div>
+        </div>
+        <div class="col-md-6 row mb-3 mt-3">
+            <div class="col">
+                <input type="text" name="possible_reasons" placeholder="Enter the possible cause of the problem" class="form-control">
+            </div>
+        </div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit" class="btn btn-warning text-black">Create report</button>
+    </form>
+</div>
+</body>
+</html>

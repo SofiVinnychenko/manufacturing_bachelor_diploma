@@ -1,0 +1,474 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Basic plan</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/CSS/headercol.css">
+    <link rel="stylesheet" href="/CSS/base-plan.css">
+    <style>
+        .nav-tabs .nav-item .nav-link {
+            background-color: #e6eaec;
+        }
+    </style>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div class="container mt-5">
+    <ul class="nav nav-tabs" id="myTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="blocks-tab" data-bs-toggle="tab" data-bs-target="#blocks" type="button"
+                    role="tab" aria-controls="blocks" aria-selected="true">Basic plan of programs
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="chart-tab" data-bs-toggle="tab" data-bs-target="#chart" type="button"
+                    role="tab" aria-controls="chart" aria-selected="false">Diagram
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="blocks" role="tabpanel" aria-labelledby="blocks-tab">
+            <h2>Basic plan of programs</h2>
+
+            <div th:with="mixerPElements=${progs.?[title == 'MixerP']},
+                  mixerEElements=${progs.?[title == 'MixerE']},
+                  syringeElements=${progs.?[title == 'SyringeM']},
+                  dryovenElements=${progs.?[title == 'DryOven']},
+                  hydrpElements=${progs.?[title == 'HydrP']},
+                  lasercElements=${progs.?[title == 'LaserC']},
+                  stackmashElements=${progs.?[title == 'StackMash']},
+                  cellelectrolyteElements=${progs.?[title == 'CellElectrolyte']},
+                  sealchamElements=${progs.?[title == 'SealCham']}">
+
+                <div th:if="${not #lists.isEmpty(mixerPElements)}" class="mixerp-block text-white">
+                    <h4>
+                        MixerP Blocks
+                        <button class="btn btn-outline-light float-end" onclick="toggleBlock(this)">Hide/Show</button>
+                    </h4>
+                    <div class="mixerp-block-body hidden">
+                        <div th:each="el : ${mixerPElements}" class="alert alert-info mt-2">
+                            <h3 th:text="'Id: ' + ${el.title} + '-' + ${el.number} + ((${el.morenumber} != null) ? ('-' + ${el.morenumber}) : '')"></h3>
+                            <p><strong>Title:</strong> <span th:text="${el.title}"></span></p>
+                            <p><strong>Beginning of work:</strong> <span th:text="${el.datetime}"></span></p>
+                            <p><strong>Batch:</strong> <span th:text="${el.batch}"></span></p>
+                            <p><strong>Capacity:</strong> <span th:text="${el.capacity}"></span></p>
+                            <p><strong>Process:</strong> <span th:text="${el.process}"></span></p>
+                            <p><strong>Machines:</strong> <span th:text="${el.machines}"></span></p>
+                            <p><strong>Processing time for one battery in kg/hours:</strong> <span th:text="${el.onebatt_hour}"></span></p>
+                            <div class="button-container">
+                                <a th:href="@{'/program/' + ${el.id} + '/edit'}" class="btn btn-outline-success">Update</a>
+                                <form th:action="'/program/' + ${el.id} + '/remove'" method="post" style="display: inline-block;">
+                                    <button class="btn btn-outline-danger" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок для всех элементов с заголовком "MixerE" -->
+                <div th:if="${not #lists.isEmpty(mixerEElements)}" class="mixere-block text-white">
+                    <h4>
+                        MixerE Blocks
+                        <button class="btn btn-outline-light float-end" onclick="toggleBlock(this)">Hide/Show</button>
+                    </h4>
+                    <div class="mixere-block-body hidden">
+                        <div th:each="el : ${mixerEElements}" class="alert alert-info mt-2">
+                            <h3 th:text="'Id: ' + ${el.title} + '-' + ${el.number} + ((${el.morenumber} != null) ? ('-' + ${el.morenumber}) : '')"></h3>
+                            <p><strong>Title:</strong> <span th:text="${el.title}"></span></p>
+                            <p><strong>Beginning of work:</strong> <span th:text="${el.datetime}"></span></p>
+                            <p><strong>Batch:</strong> <span th:text="${el.batch}"></span></p>
+                            <p><strong>Capacity:</strong> <span th:text="${el.capacity}"></span></p>
+                            <p><strong>Process:</strong> <span th:text="${el.process}"></span></p>
+                            <p><strong>Machines:</strong> <span th:text="${el.machines}"></span></p>
+                            <p><strong>Processing time for one battery in kg/hours:</strong> <span th:text="${el.onebatt_hour}"></span></p>
+                            <a th:href="@{'/program/' + ${el.id} + '/edit'}" class="btn btn-outline-success">Update</a>
+                            <form th:action="'/program/' + ${el.id} + '/remove'" method="post" style="display: inline-block;">
+                                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок для всех элементов с заголовком "SyringeM" -->
+                <div th:if="${not #lists.isEmpty(syringeElements)}" class="syringem-block text-white">
+                    <h4>
+                        SyringeM Blocks
+                        <button class="btn btn-outline-light float-end" onclick="toggleBlock(this)">Hide/Show</button>
+                    </h4>
+                    <div class="syringem-block-body hidden">
+                        <div th:each="el : ${syringeElements}" class="alert alert-info mt-2">
+                            <h3 th:text="'Id: ' + ${el.title} + '-' + ${el.number} + ((${el.morenumber} != null) ? ('-' + ${el.morenumber}) : '')"></h3>
+                            <p><strong>Title:</strong> <span th:text="${el.title}"></span></p>
+                            <p><strong>Beginning of work:</strong> <span th:text="${el.datetime}"></span></p>
+                            <p><strong>Batch:</strong> <span th:text="${el.batch}"></span></p>
+                            <p><strong>Capacity:</strong> <span th:text="${el.capacity}"></span></p>
+                            <p><strong>Process:</strong> <span th:text="${el.process}"></span></p>
+                            <p><strong>Machines:</strong> <span th:text="${el.machines}"></span></p>
+                            <p><strong>Processing time for one battery in kg/hours:</strong> <span th:text="${el.onebatt_hour}"></span></p>
+                            <a th:href="@{'/program/' + ${el.id} + '/edit'}" class="btn btn-outline-success">Update</a>
+                            <form th:action="'/program/' + ${el.id} + '/remove'" method="post" style="display: inline-block;">
+                                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок для всех элементов с заголовком "DryOven" -->
+                <div th:if="${not #lists.isEmpty(dryovenElements)}" class="dryoven-block text-white">
+                    <h4>
+                        DryOven Blocks
+                        <button class="btn btn-outline-light float-end" onclick="toggleBlock(this)">Hide/Show</button>
+                    </h4>
+                    <div class="dryoven-block-body hidden">
+                        <div th:each="el : ${dryovenElements}" class="alert alert-info mt-2">
+                            <h3 th:text="'Id: ' + ${el.title} + '-' + ${el.number} + ((${el.morenumber} != null) ? ('-' + ${el.morenumber}) : '')"></h3>
+                            <p><strong>Title:</strong> <span th:text="${el.title}"></span></p>
+                            <p><strong>Beginning of work:</strong> <span th:text="${el.datetime}"></span></p>
+                            <p><strong>Batch:</strong> <span th:text="${el.batch}"></span></p>
+                            <p><strong>Capacity:</strong> <span th:text="${el.capacity}"></span></p>
+                            <p><strong>Process:</strong> <span th:text="${el.process}"></span></p>
+                            <p><strong>Machines:</strong> <span th:text="${el.machines}"></span></p>
+                            <p><strong>Processing time for one battery in kg/hours:</strong> <span th:text="${el.onebatt_hour}"></span></p>
+                            <a th:href="@{'/program/' + ${el.id} + '/edit'}" class="btn btn-outline-success">Update</a>
+                            <form th:action="'/program/' + ${el.id} + '/remove'" method="post" style="display: inline-block;">
+                                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок для всех элементов с заголовком "HydrP" -->
+                <div th:if="${not #lists.isEmpty(hydrpElements)}" class="hydrp-block text-white">
+                    <h4>
+                        HydrP Blocks
+                        <button class="btn btn-outline-light float-end" onclick="toggleBlock(this)">Hide/Show</button>
+                    </h4>
+                    <div class="hydrp-block-body hidden">
+                        <div th:each="el : ${hydrpElements}" class="alert alert-info mt-2">
+                            <h3 th:text="'Id: ' + ${el.title} + '-' + ${el.number} + ((${el.morenumber} != null) ? ('-' + ${el.morenumber}) : '')"></h3>
+                            <p><strong>Title:</strong> <span th:text="${el.title}"></span></p>
+                            <p><strong>Beginning of work:</strong> <span th:text="${el.datetime}"></span></p>
+                            <p><strong>Batch:</strong> <span th:text="${el.batch}"></span></p>
+                            <p><strong>Capacity:</strong> <span th:text="${el.capacity}"></span></p>
+                            <p><strong>Process:</strong> <span th:text="${el.process}"></span></p>
+                            <p><strong>Machines:</strong> <span th:text="${el.machines}"></span></p>
+                            <p><strong>Processing time for one battery in kg/hours:</strong> <span th:text="${el.onebatt_hour}"></span></p>
+                            <a th:href="@{'/program/' + ${el.id} + '/edit'}" class="btn btn-outline-success">Update</a>
+                            <form th:action="'/program/' + ${el.id} + '/remove'" method="post" style="display: inline-block;">
+                                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок для всех элементов с заголовком "LaserC" -->
+                <div th:if="${not #lists.isEmpty(lasercElements)}" class="laserc-block">
+                    <h4>
+                        LaserC Blocks
+                        <button class="btn btn-outline-dark float-end" onclick="toggleBlock(this)">Hide/Show</button>
+                    </h4>
+                    <div class="laserc-block-body hidden">
+                        <div th:each="el : ${lasercElements}" class="alert alert-info mt-2">
+                            <h3 th:text="'Id: ' + ${el.title} + '-' + ${el.number} + ((${el.morenumber} != null) ? ('-' + ${el.morenumber}) : '')"></h3>
+                            <p><strong>Title:</strong> <span th:text="${el.title}"></span></p>
+                            <p><strong>Beginning of work:</strong> <span th:text="${el.datetime}"></span></p>
+                            <p><strong>Batch:</strong> <span th:text="${el.batch}"></span></p>
+                            <p><strong>Capacity:</strong> <span th:text="${el.capacity}"></span></p>
+                            <p><strong>Process:</strong> <span th:text="${el.process}"></span></p>
+                            <p><strong>Machines:</strong> <span th:text="${el.machines}"></span></p>
+                            <p><strong>Processing time for one battery in kg/hours:</strong> <span th:text="${el.onebatt_hour}"></span></p>
+                            <a th:href="@{'/program/' + ${el.id} + '/edit'}" class="btn btn-outline-success">Update</a>
+                            <form th:action="'/program/' + ${el.id} + '/remove'" method="post" style="display: inline-block;">
+                                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок для всех элементов с заголовком "StackMash" -->
+                <div th:if="${not #lists.isEmpty(stackmashElements)}" class="stackmash-block">
+                    <h4>
+                        StackMash Blocks
+                        <button class="btn btn-outline-dark float-end" onclick="toggleBlock(this)">Hide/Show</button>
+                    </h4>
+                    <div class="stackmash-block-body hidden">
+                        <div th:each="el : ${stackmashElements}" class="alert alert-info mt-2">
+                            <h3 th:text="'Id: ' + ${el.title} + '-' + ${el.number} + ((${el.morenumber} != null) ? ('-' + ${el.morenumber}) : '')"></h3>
+                            <p><strong>Title:</strong> <span th:text="${el.title}"></span></p>
+                            <p><strong>Beginning of work:</strong> <span th:text="${el.datetime}"></span></p>
+                            <p><strong>Batch:</strong> <span th:text="${el.batch}"></span></p>
+                            <p><strong>Capacity:</strong> <span th:text="${el.capacity}"></span></p>
+                            <p><strong>Process:</strong> <span th:text="${el.process}"></span></p>
+                            <p><strong>Machines:</strong> <span th:text="${el.machines}"></span></p>
+                            <p><strong>Processing time for one battery in kg/hours:</strong> <span th:text="${el.onebatt_hour}"></span></p>
+                            <a th:href="@{'/program/' + ${el.id} + '/edit'}" class="btn btn-outline-success">Update</a>
+                            <form th:action="'/program/' + ${el.id} + '/remove'" method="post" style="display: inline-block;">
+                                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок для всех элементов с заголовком "CellElectrolyte" -->
+                <div th:if="${not #lists.isEmpty(cellelectrolyteElements)}" class="cellelectrolyte-block">
+                    <h4>
+                        CellElectrolyte Blocks
+                        <button class="btn btn-outline-dark float-end" onclick="toggleBlock(this)">Hide/Show</button>
+                    </h4>
+                    <div class="cellelectrolyte-block-body hidden">
+                        <div th:each="el : ${cellelectrolyteElements}" class="alert alert-info mt-2">
+                            <h3 th:text="'Id: ' + ${el.title} + '-' + ${el.number} + ((${el.morenumber} != null) ? ('-' + ${el.morenumber}) : '')"></h3>
+                            <p><strong>Title:</strong> <span th:text="${el.title}"></span></p>
+                            <p><strong>Beginning of work:</strong> <span th:text="${el.datetime}"></span></p>
+                            <p><strong>Batch:</strong> <span th:text="${el.batch}"></span></p>
+                            <p><strong>Capacity:</strong> <span th:text="${el.capacity}"></span></p>
+                            <p><strong>Process:</strong> <span th:text="${el.process}"></span></p>
+                            <p><strong>Machines:</strong> <span th:text="${el.machines}"></span></p>
+                            <p><strong>Processing time for one battery in kg/hours:</strong> <span th:text="${el.onebatt_hour}"></span></p>
+                            <a th:href="@{'/program/' + ${el.id} + '/edit'}" class="btn btn-outline-success">Update</a>
+                            <form th:action="'/program/' + ${el.id} + '/remove'" method="post" style="display: inline-block;">
+                                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок для всех элементов с заголовком "SealCham" -->
+                <div th:if="${not #lists.isEmpty(sealchamElements)}" class="sealcham-block">
+                    <h4>
+                        SealCham Blocks
+                        <button class="btn btn-outline-dark float-end" onclick="toggleBlock(this)">Hide/Show</button>
+                    </h4>
+                    <div class="sealcham-block-body hidden">
+                        <div th:each="el : ${sealchamElements}" class="alert alert-info mt-2">
+                            <h3 th:text="'Id: ' + ${el.title} + '-' + ${el.number} + ((${el.morenumber} != null) ? ('-' + ${el.morenumber}) : '')"></h3>
+                            <p><strong>Title:</strong> <span th:text="${el.title}"></span></p>
+                            <p><strong>Beginning of work:</strong> <span th:text="${el.datetime}"></span></p>
+                            <p><strong>Batch:</strong> <span th:text="${el.batch}"></span></p>
+                            <p><strong>Capacity:</strong> <span th:text="${el.capacity}"></span></p>
+                            <p><strong>Process:</strong> <span th:text="${el.process}"></span></p>
+                            <p><strong>Machines:</strong> <span th:text="${el.machines}"></span></p>
+                            <p><strong>Processing time for one battery in kg/hours:</strong> <span th:text="${el.onebatt_hour}"></span></p>
+                            <a th:href="@{'/program/' + ${el.id} + '/edit'}" class="btn btn-outline-success">Update</a>
+                            <form th:action="'/program/' + ${el.id} + '/remove'" method="post" style="display: inline-block;">
+                                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="chart" role="tabpanel" aria-labelledby="chart-tab">
+            <!-- Контейнер для графика -->
+            <div>
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const myChart = document.getElementById('myChart');
+    let chart; // Переменная для хранения экземпляра графика
+
+
+    // Получаем все блоки с элементами
+    const blockElements = document.querySelectorAll('.mixerp-block, .mixere-block, .syringem-block, .dryoven-block, .hydrp-block, .laserc-block, .stackmash-block, .cellelectrolyte-block, .sealcham-block');
+
+    // Привязываем обработчики событий к блокам элементов
+    blockElements.forEach(block => {
+        block.addEventListener('click', () => {
+            const blockTitle = block.querySelector('h4').textContent.trim().split(' ')[0]; // Получаем название блока (MixerP, MixerE, ...)
+            const elements = block.querySelectorAll('.alert-info');
+
+            if (blockTitle === 'MixerP') {
+                // Специальная обработка для блока MixerP
+                const data = processMixerPData(elements);
+                createOrUpdateChart(data);
+            } else {
+                const data = {
+                    labels: Array.from(elements).map(el => el.querySelector('p:nth-child(3) span').textContent)
+                };
+                createOrUpdateChart(data);
+            }
+        });
+    });
+
+    // Функция для обработки данных блоков MixerP и MixerE
+    function processMixerPAndEData(elements, blockTitle) {
+        const labels = [];
+        const data = [];
+
+        // Группировка элементов по значению datetime
+        const groupedByDatetime = Array.from(elements).reduce((acc, el) => {
+            const datetimeStr = el.querySelector('p:nth-child(3) span').textContent;
+            const datetime = datetimeStr.split(' ')[0]; // Получаем только дату из строки "YYYY-MM-DD HH:MM:SS"
+            const title = el.querySelector('p:nth-child(2) span').textContent;
+            if (!acc[datetime]) {
+                acc[datetime] = [];
+            }
+            if (!acc[datetime][title]) {
+                acc[datetime][title] = [];
+            }
+            acc[datetime][title].push(el);
+            return acc;
+        }, {});
+
+        // Обработка каждой группы элементов
+        for (const [datetime, groupByTitle] of Object.entries(groupedByDatetime)) {
+            let sum = 0;
+            for (const [title, group] of Object.entries(groupByTitle)) {
+                for (const el of group) {
+                    const batch = parseFloat(el.querySelector('p:nth-child(4) span').textContent);
+                    const onebattHour = parseFloat(el.querySelector('p:nth-child(8) span').textContent);
+                    sum += 0.5 * (onebattHour * batch); // Вычисление по новой формуле
+                }
+            }
+            labels.push(datetime);
+            data.push(sum);
+        }
+
+        return { labels, datasets: [{ label: blockTitle, data }] };
+    }
+
+    // Функция для обработки данных блоков SyringeM, DryOven, HydrP, LaserC, StackMash, CellElectrolyte, SealCham
+    function processOtherData(elements, title) {
+        const labels = [];
+        const data = [];
+
+        // Группировка элементов по значению datetime
+        const groupedByDatetime = Array.from(elements).reduce((acc, el) => {
+            const datetimeStr = el.querySelector('p:nth-child(3) span').textContent;
+            const datetime = datetimeStr.split(' ')[0]; // Получаем только дату из строки "YYYY-MM-DD HH:MM:SS"
+            if (!acc[datetime]) {
+                acc[datetime] = [];
+            }
+            acc[datetime].push(el);
+            return acc;
+        }, {});
+
+        // Обработка каждой группы элементов
+        for (const [datetime, group] of Object.entries(groupedByDatetime)) {
+            let sum = 0;
+            for (const el of group) {
+                const batch = parseFloat(el.querySelector('p:nth-child(4) span').textContent);
+                const onebattHour = parseFloat(el.querySelector('p:nth-child(8) span').textContent);
+                sum += onebattHour * batch; // Вычисление по новой формуле
+            }
+            labels.push(datetime);
+            data.push(sum);
+        }
+
+        return { labels, datasets: [{ label: title, data }] };
+    }
+
+    function createOrUpdateChart(data) {
+        // Проверяем наличие существующего графика
+        if (chart) {
+            // Обновляем данные существующего графика
+            chart.data.labels = data.labels;
+            chart.data.datasets = data.datasets.map(dataset => {
+                const colors = dataset.data.map(value => {
+                    if (value >= 0 && value < 6) {
+                        return 'yellow';
+                    } else if (value >= 6 && value <= 8) {
+                        return 'green';
+                    } else {
+                        return 'red';
+                    }
+                });
+                return {
+                    ...dataset,
+                    backgroundColor: colors
+                };
+            });
+            chart.update();
+        } else {
+            // Создаем новый график
+            chart = new Chart(myChart, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: data.datasets.map(dataset => {
+                        const colors = dataset.data.map(value => {
+                            if (value >= 0 && value < 6) {
+                                return 'yellow';
+                            } else if (value >= 6 && value <= 8) {
+                                return 'green';
+                            } else {
+                                return 'red';
+                            }
+                        });
+                        return {
+                            ...dataset,
+                            backgroundColor: colors
+                        };
+                    })
+                },
+                options: {
+                    indexAxis: 'y', // Этот параметр делает гистограмму горизонтальной
+                    scales: {
+                        x: { // Настройки для горизонтальной оси
+                            beginAtZero: true,
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    // Переменная для хранения ссылки на выбранный блок
+    let selectedBlock = null;
+
+    // Функция для подсветки выбранного блока
+    function highlightBlock(block) {
+        // Сбрасываем стили для предыдущего выбранного блока
+        if (selectedBlock) {
+            selectedBlock.style.backgroundColor = '';
+            selectedBlock.style.color = '';
+        }
+
+        // Применяем стили для нового выбранного блока
+        if (block) {
+            block.style.backgroundColor = '#056c92';
+            block.style.color = '#b5dbfc';
+        }
+
+        selectedBlock = block;
+    }
+
+    // Привязываем обработчики событий к блокам элементов
+    blockElements.forEach(block => {
+        block.addEventListener('click', () => {
+            const blockTitle = block.querySelector('h4').textContent.trim().split(' ')[0]; // Получаем название блока (MixerP, MixerE, ...)
+            const elements = block.querySelectorAll('.alert-info');
+
+            if (blockTitle === 'MixerP' || blockTitle === 'MixerE') {
+                // Специальная обработка для блоков MixerP и MixerE
+                const data = processMixerPAndEData(elements, blockTitle);
+                createOrUpdateChart(data);
+                highlightBlock(block); // Подсвечиваем выбранный блок
+            } else {
+                const data = processOtherData(elements, blockTitle);
+                createOrUpdateChart(data);
+                highlightBlock(block); // Подсвечиваем выбранный блок
+            }
+        });
+    });
+
+    function toggleBlock(button) {
+        const blockBody = button.parentElement.nextElementSibling;
+        blockBody.classList.toggle('hidden');
+        button.innerText = blockBody.classList.contains('hidden') ? 'Show' : 'Hide';
+    }
+</script>
+<script>
+    document.getElementById('blocks-tab').addEventListener('click', function () {
+        location.reload();
+    });
+</script>
+</body>
+</html>

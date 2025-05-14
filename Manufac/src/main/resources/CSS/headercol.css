@@ -1,0 +1,19 @@
+.my-header {
+    background-color: #022d3d;
+}
+.container-wrapper {
+    background-color: #022d3d;
+    padding-left: 0;
+    padding-right: 0;
+}
+.nav-pills .nav-link {
+    color: #f6be00;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #f6be00;
+    color: #022d3d;
+}
+body {
+    background-color: #e6eaec;
+}

@@ -1,0 +1,78 @@
+.hidden {
+    display: none;
+}
+
+.mixerp-block {
+    background-color: #022d3d;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.mixere-block {
+    background-color: #1b4250;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.syringem-block {
+    background-color: #355764;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.dryoven-block {
+    background-color: #4e6c77;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.hydrp-block {
+    background-color: #67818b;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.laserc-block {
+    background-color: #81969e;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.stackmash-block {
+    background-color: #9aabb1;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.cellelectrolyte-block {
+    background-color: #b3c0c5;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.sealcham-block {
+    background-color: #ccd5d8;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.button-container {
+    justify-content: flex-end;
+}
+
+.button-container > * {
+    margin-left: 10px;
+}
+.alert-info {
+    position: relative;
+    background-color: #b3c0c5;
+}

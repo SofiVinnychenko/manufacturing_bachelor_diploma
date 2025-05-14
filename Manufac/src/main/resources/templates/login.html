@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Authentication form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .login-block {
+            background-color: #022d3d;
+            display: flex;
+            align-items: center;
+            color: #f6be00;
+        }
+        .btn-block {
+            background-color: #f6be00;
+            display: block;
+            width: 150px; /* Ширина кнопки */
+            margin: 0 auto; /* Центрирование кнопки */
+            font-weight: bold;
+        }
+        .card-body{
+            background-color: #e6eaec;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header login-block">
+                    <img src="/img/letter.png" alt="letter" width="60" height="40">
+                    <h4 class="fs-4">Authentication form</h4>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/login}" method="post">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-block text-black">Login</button>
+                    </form>
+                    <div th:if="${errorMessage}" class="alert alert-danger mt-3" role="alert">
+                        <span th:text="${errorMessage}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

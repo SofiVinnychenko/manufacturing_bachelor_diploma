@@ -1,0 +1,5 @@
+#letterImageContainer {
+    width: 270px;
+    height: 60px;
+    background-image: url('/img/letter.png');
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Daily report</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .completed {
+            color: green;
+        }
+        .header-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        @media print {
+            body *:not(.printable) {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5 print">
+    <div class="container" id="printContent">
+        <div class="header-container">
+        <button class="btn btn-outline-primary" onclick="printEl()"><i class="bi bi-printer"></i> Print</button>
+        </div>
+    <div class="tab-content" id="myTabContent">
+        <div class="col-md-12 mb-5">
+        <div class="mb-3">
+        <h2>Completed tasks:</h2>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="10%" class="text-center border-0">Number of order</th>
+                <th width="10%" class="text-center">Process</th>
+                <th width="10%" class="text-center">Number of batch</th>
+                <th width="10%" class="text-center">Units</th>
+                <th width="10%" class="text-center" colspan="2">Quantity</th>
+                <th width="10%" class="text-center border-0">Condition</th>
+            </tr>
+            <tr>
+                <th class="border-0"></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th class="text-center">Plan</th>
+                <th class="text-center">Fact</th>
+                <th class="border-0"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="daily : ${workdaily}">
+                <td class="text-center border-0" th:text="${daily.number}"></td>
+                <td class="text-center" th:text="${daily.process}"></td>
+                <td class="text-center" th:text="${daily.morenumber}"></td>
+                <td class="text-center">pcs</td>
+                <td class="text-center" th:text="${daily.batch}"></td>
+                <td class="text-center" th:text="${daily.batch}"></td>
+                <td class="text-center border-0"><span class="completed">Completed</span></td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        <div class="col-md-12 mb-5">
+        <div class="mb-3">
+            <h2>Repairs carried out:</h2>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="10%" class="text-center border-0">Main problem</th>
+                <th width="10%" class="text-center">Process of manufacturing</th>
+                <th width="10%" class="text-center">Model of machine</th>
+                <th width="10%" class="text-center">Repair details</th>
+                <th width="10%" class="text-center border-0">Time spent on repairs (HH:mm)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="repdaily : ${repdaily}">
+                <td class="text-center border-0" th:text="${repdaily[2]}"></td> <!-- проблема -->
+                <td class="text-center" th:text="${repdaily[1]}"></td> <!-- процесс -->
+                <td class="text-center" th:text="${repdaily[10]}"></td> <!-- модель машины -->
+                <td class="text-center" th:text="${repdaily[3]}"></td> <!-- детали -->
+                <td class="text-center border-0" th:text="${repdaily[9]}"></td> <!-- потраченное время -->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+        <div class="row mt-5 mb-3">
+            <div class="col-md-6">
+                <table class="table table-borderless">
+                    <tr>
+                        <th width="23%">Chief operating officer:</th>
+                        <td>______________________</td>
+                    </tr>
+                    <tr>
+                        <th width="25%">Signature:</th>
+                        <td>______________________</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-borderless offset-md-6">
+                    <tr>
+                        <th width="23%">Chief executive officer:</th>
+                        <td>______________________</td>
+                    </tr>
+                    <tr>
+                        <th width="23%">Signature:</th>
+                        <td>______________________</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+</div>
+    </div>
+</div>
+<script>
+    function printEl(){
+        var printButton = document.querySelector('.btn.btn-outline-primary');
+        printButton.style.display = 'none'; // Скрываем кнопку печати
+        var printWindow = window.open('', '_blank');
+        var printContent = document.getElementById('printContent').innerHTML;
+        var styles = document.getElementsByTagName('link');
+        var stylesHTML = '';
+        for (var i = 0; i < styles.length; i++) {
+            stylesHTML += styles[i].outerHTML;
+        }
+        printWindow.document.write('<html><head><title>Print</title>');
+        printWindow.document.write(stylesHTML); // Вставляем стили
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close(); // Завершаем запись в новое окно
+        printWindow.print(); // Печатаем содержимое нового окна
+        printWindow.close(); // Закрываем новое окно после печати
+        printButton.style.display = ''; // Восстанавливаем отображение кнопки после печати
+    }
+</script>
+</body>
+</html>

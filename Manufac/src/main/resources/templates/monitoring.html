@@ -1,0 +1,615 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Monitoring</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/headercol.css">
+    <style>
+        .table td, .table th {
+            background-color: #e6eaec;
+        }
+        .bi {
+            color: black;
+        }
+        .normal {
+            color: green;
+        }
+        .abnormal {
+            color: red;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            padding: 16px;
+            border-radius: 4px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: #000;
+            color: #ff0000;
+            left: 20px;
+        }
+
+        .toast:not(.error) {
+            background-color: #333;
+            color: #fff;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+<header th:insert="blocks/headerDisp :: header"></header>
+<div class="container mt-5">
+    <div class="mb-5">
+        <button type="button" class="btn btn-warning text-black me-4" onclick="startProcesses()">
+            <i class="bi bi-caret-right"></i> Start</button>
+        <button type="button" class="btn btn-warning text-black me-4" onclick="stopProcesses()">
+            <i class="bi bi-pause"></i> Pause</button>
+        <a th:href="@{'/monitoring/repair'}" class="btn btn-warning text-black me-4">
+            <i class="bi bi-people"></i> Repair</a>
+    </div>
+    <div class="tab-content" id="myTabContent">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Type</th>
+                            <th>Productivity</th>
+                            <th>Downtime</th>
+                            <th>Noise generation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="mixer : ${mixers}">
+                            <td th:text="${mixer[5]}"></td>
+                            <td>Mixer for pasta</td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span> <!-- Downtime -->
+                            </td>
+                            <td>
+                                <span id="noiseGenerationStatus" class="normal">Normal</span>
+                            </td>
+                        </tr>
+                        <tr th:each="mixerE : ${mixere}">
+                            <td th:text="${mixerE[5]}"></td>
+                            <td>Mixer for electrolyte</td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                        </tr>
+                        <tr th:each="Syrm : ${syrm}">
+                            <td th:text="${Syrm[6]}"></td>
+                            <td>Applying paste to collectors</td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                        </tr>
+                        <tr th:each="dryO : ${dryo}">
+                            <td th:text="${dryO[6]}"></td>
+                            <td>Drying the electrodes</td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                        </tr>
+                        <tr th:each="hydrP : ${hydr}">
+                            <td th:text="${hydrP[6]}"></td>
+                            <td>Electrode pressing</td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                        </tr>
+                        <tr th:each="laserC : ${laser}">
+                            <td th:text="${laserC[7]}"></td>
+                            <td>Electrode separation</td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                        </tr>
+                        <tr th:each="stackM : ${stack}">
+                            <td th:text="${stackM[7]}"></td>
+                            <td>Stacking battery cells</td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                        </tr>
+                        <tr th:each="elecM : ${elec}">
+                            <td th:text="${elecM[5]}"></td>
+                            <td>Filling electrolyte</td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                        </tr>
+                        <tr th:each="sealM : ${seal}">
+                            <td th:text="${sealM[8]}"></td>
+                            <td>Sealing of battery cells</td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                            <td>
+                                <span class="normal">Normal</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <div id="mixer-details" class="row">
+                        <div th:each="mixer, iterStat : ${mixers}" class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Speed of rotation</th>
+                                    <th>Power (KWt)</th>
+                                    <th>Noise level (dB)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${mixer[5]}" data-model="${mixer[6]}"></td>
+                                    <td>-</td>
+                                    <td th:text="${mixer[2]}"></td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="mixer-detailse" class="row">
+                        <div th:each="mixerE, iterStat : ${mixere}" class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Speed of rotation</th>
+                                    <th>Power (KWt)</th>
+                                    <th>Noise level (dB)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${mixerE[5]}" data-model="${mixerE[5]}"></td>
+                                    <td>-</td>
+                                    <td th:text="${mixerE[1]}"></td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="syringe-details" class="row">
+                        <div th:each="Syrm, iterStat : ${syrm}" class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Pressure (Bar)</th>
+                                    <th>Power (KWt)</th>
+                                    <th>Dose (ml)</th>
+                                    <th>Noise level (dB)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${Syrm[6]}" data-model="${Syrm[6]}"></td>
+                                    <td>-</td>
+                                    <td th:text="${Syrm[1]}"></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="dry-details" class="row">
+                        <div th:each="dryO, iterStat : ${dryo}" class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Temperature</th>
+                                    <th>Power (KWt)</th>
+                                    <th>Noise level (dB)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${dryO[6]}" data-model="${dryO[6}"></td>
+                                    <td>-</td>
+                                    <td th:text="${dryO[1]}"></td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="hydrp-details" class="row">
+                        <div th:each="hydrP, iterStat : ${hydr}" class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Pressure (kN)</th>
+                                    <th>Electrode thickness (μm)</th>
+                                    <th>Calendering speed (m/min)</th>
+                                    <th>Noise level (dB)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${hydrP[6]}" data-model="${hydrP[6}"></td>
+                                    <td th:text="${hydrP[1]}"></td>
+                                    <td th:text="${hydrP[2]}"></td>
+                                    <td th:text="${hydrP[3]}"></td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="laserc-details" class="row">
+                        <div th:each="laserC, iterStat : ${laser}" class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Speed (m/min)</th>
+                                    <th>Power (KWt)</th>
+                                    <th>Width of electrode (mm)</th>
+                                    <th>Length of electrodes (mm)</th>
+                                    <th>Noise level (dB)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${laserC[7]}" data-model="${laserC[7}"></td>
+                                    <td>-</td>
+                                    <td th:text="${laserC[1]}"></td>
+                                    <td th:text="${laserC[3]}"></td>
+                                    <td th:text="${laserC[4]}"></td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="stack-details" class="row">
+                        <div th:each="stackM, iterStat : ${stack}" class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Compress air (MPa)</th>
+                                    <th>Power (KWt)</th>
+                                    <th>Vacuum supply (l/min)</th>
+                                    <th>Stack speed (s/pcs)</th>
+                                    <th>Noise level (dB)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${stackM[7]}" data-model="${stackM[7}"></td>
+                                    <td th:text="${stackM[1]}"></td>
+                                    <td th:text="${stackM[3]}"></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="elec-details" class="row">
+                        <div th:each="elecM, iterStat : ${elec}" class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Vacuum degree (MPa)</th>
+                                    <th>Power (KWt)</th>
+                                    <th>Noise level (dB)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${elecM[5]}" data-model="${elecM[5}"></td>
+                                    <td th:text="${elecM[1]}"></td>
+                                    <td th:text="${elecM[2]}"></td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="seal-details" class="row">
+                        <div th:each="sealM, iterStat : ${seal}" class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Compress (psi)</th>
+                                    <th>Power (KWt)</th>
+                                    <th>Sealing temperature</th>
+                                    <th>Hot time (s)</th>
+                                    <th>Air supply (MPa)</th>
+                                    <th>Noise level (dB)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${sealM[8]}" data-model="${sealM[8}"></td>
+                                    <td th:text="${sealM[2]}"></td>
+                                    <td th:text="${sealM[1]}"></td>
+                                    <td th:text="${sealM[6]}"></td>
+                                    <td th:text="${sealM[4]}"></td>
+                                    <td th:text="${sealM[3]}"></td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div id="processToast" class="toast">
+    <span id="processName"></span>
+</div>
+
+<div id="errorToast" class="toast error">
+    <span id="errorMessage"></span>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let processes = /*[[${wprog}]]*/ [];
+    let processeIntervalId;
+    let mixerIntervalId;
+    let pauseFlag = false;
+    let processTimeouts = [];
+    let processNames = /*[[${processNames}]]*/ [];
+    let processStartTime;
+    let processIntervalId;
+    let noiseGenerationTimeout;
+
+    function startProcesses() {
+
+    noiseGenerationTimeout = setTimeout(function() {
+        let noiseGenerationStatusElement = document.getElementById('noiseGenerationStatus');
+        noiseGenerationStatusElement.textContent = 'Abnormal';
+        noiseGenerationStatusElement.classList.remove('normal');
+        noiseGenerationStatusElement.classList.add('abnormal');
+        showToast('Increased noise level detected', true);
+    }, 60000);
+
+
+
+        // Генерация случайных чисел для таблиц миксеров
+        let mixerSpeedCells = document.querySelectorAll('#mixer-details table tbody tr td:nth-child(2)');
+        let mixerNoiseCells = document.querySelectorAll('#mixer-details table tbody tr td:nth-child(4)');
+
+        let mixerESpeedCells = document.querySelectorAll('#mixer-detailse table tbody tr td:nth-child(2)');
+        let mixerENoiseCells = document.querySelectorAll('#mixer-detailse table tbody tr td:nth-child(4)');
+
+        let syringeMPressure = document.querySelectorAll('#syringe-details table tbody tr td:nth-child(2)');
+        let syringeMDose = document.querySelectorAll('#syringe-details table tbody tr td:nth-child(4)');
+        let syringeMNoiseCells = document.querySelectorAll('#syringe-details table tbody tr td:nth-child(5)');
+
+        let dryOTemperature = document.querySelectorAll('#dry-details table tbody tr td:nth-child(2)');
+        let dryONoiseCells = document.querySelectorAll('#dry-details table tbody tr td:nth-child(4)');
+
+        let hydrPNoiseCells = document.querySelectorAll('#hydrp-details table tbody tr td:nth-child(5)');
+
+        let laserCSpeed = document.querySelectorAll('#laserc-details table tbody tr td:nth-child(2)');
+        let laserCNoiseCells = document.querySelectorAll('#laserc-details table tbody tr td:nth-child(6)');
+
+        let stackMVacuumS = document.querySelectorAll('#stack-details table tbody tr td:nth-child(4)');
+        let stackMSpeed = document.querySelectorAll('#stack-details table tbody tr td:nth-child(5)');
+        let stackMNoiseCells = document.querySelectorAll('#stack-details table tbody tr td:nth-child(6)');
+
+        let elecMNoiseCells = document.querySelectorAll('#elec-details table tbody tr td:nth-child(4)');
+
+        let sealMNoiseCells = document.querySelectorAll('#seal-details table tbody tr td:nth-child(7)');
+
+        let startTime = new Date().getTime();
+
+        function updateMixerValues() {
+            mixerSpeedCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(60, 70);
+            });
+            mixerESpeedCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(70, 80);
+            });
+            mixerNoiseCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(78, 80);
+            });
+            mixerENoiseCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(75, 80);
+            });
+            syringeMNoiseCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(70, 72);
+            });
+            dryONoiseCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(74, 80);
+            });
+            hydrPNoiseCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(90, 94);
+            });
+            laserCNoiseCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(70, 74);
+            });
+            stackMNoiseCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(70, 80);
+            });
+            elecMNoiseCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(70, 85);
+            });
+            sealMNoiseCells.forEach(cell => {
+                cell.textContent = generateRandomNumber(75, 85);
+            });
+            syringeMPressure.forEach(cell => {
+                cell.textContent = generateRandomNumber(13, 16);
+            });
+            syringeMDose.forEach(cell => {
+                cell.textContent = generateRandomNumber(1, 5);
+            });
+            dryOTemperature.forEach(cell => {
+                cell.textContent = generateRandomNumber(70, 100);
+            });
+            laserCSpeed.forEach(cell => {
+                cell.textContent = generateRandomNumber(1, 3);
+            });
+            stackMVacuumS.forEach(cell => {
+                cell.textContent = generateRandomNumber(100, 120);
+            });
+            stackMSpeed.forEach(cell => {
+                cell.textContent = generateRandomNumber(1.4, 1.5);
+            });
+
+            let elapsedTime = new Date().getTime() - startTime;
+            if (elapsedTime >= 60000) {
+                mixerNoiseCells.forEach(cell => {
+                    cell.textContent = 82;
+                    cell.style.color = 'red';
+                });
+                clearInterval(intervalId);
+            }
+        }
+
+        let intervalId = setInterval(updateMixerValues, 30000);
+        updateMixerValues();
+
+        // processStartTime = new Date().getTime();
+        showProcessToasts();
+        showErrorToast();
+    }
+
+    function generateRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    let processToastTimers = []; // Массив для хранения таймеров тостов процессов
+
+    function stopProcesses() {
+        clearTimeout(noiseGenerationTimeout);
+        clearInterval(processIntervalId);
+        clearInterval(mixerIntervalId);
+        processTimeouts.forEach(timeout => clearTimeout(timeout));
+        processToastTimers.forEach(timer => clearTimeout(timer)); // Очистка таймеров тостов процессов
+        pauseFlag = true;
+    }
+
+
+    function showProcessToasts() {
+        if (!processStartTime) {
+            processStartTime = new Date().getTime();
+        }
+
+        clearInterval(processIntervalId); // Очистить предыдущий интервал
+        processToastTimers = []; // Очистить массив таймеров тостов процессов
+
+        setTimeout(function() {
+            const currentTime = new Date().getTime();
+            const elapsedTime = currentTime - processStartTime;
+
+            // Проходим по каждому названию процесса
+            for (let i = 0; i < processNames.length; i++) {
+                // Задержка в две минуты между каждым тостом
+                const delay = i * 40000; // 120000 мс = 2 минуты
+                const toastTimer = setTimeout(function() {
+                    showToast(processNames[i], false);
+                }, delay);
+                processToastTimers.push(toastTimer); // Добавить таймер в массив
+            }
+
+            // Запускаем интервал для повторения циклов через день
+            processIntervalId = setInterval(showProcessToasts, 86400000); // 86400000 мс = 1 день
+        }, 40000); // Задержка в две минуты перед показом первого тоста
+    }
+    function showToast(text, isError = false) {
+        const toast = isError ? document.getElementById("errorToast") : document.getElementById("processToast");
+        const messageElement = isError ? document.getElementById("errorMessage") : document.getElementById("processName");
+
+        messageElement.textContent = isError ? text : `Program "${text}" done success`;
+        toast.classList.add("show");
+        setTimeout(function() {
+            toast.classList.remove("show");
+        }, isError ? 7000 : 3000); // Время отображения тоста (7 секунд для ошибки, 3 секунды для обычного тоста)
+    }
+
+    function showErrorToast() {
+        setTimeout(function() {
+            showToast('Increased noise level detected', true);
+        }, 180000); // Задержка в 3 минуты (180000 мс)
+    }
+    /*]]>*/
+</script>
+</body>
+</html>
